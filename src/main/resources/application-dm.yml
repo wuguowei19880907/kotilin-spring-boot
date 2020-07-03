@@ -1,0 +1,37 @@
+spring:
+  shardingsphere:
+    datasource:
+      name: ds1
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: oracle.jdbc.OracleDriver
+        jdbc-url: jdbc:oracle:thin:@//192.168.199.190:1521/ORCL
+        username: sharding
+        password: 's11111'
+        hikari:
+          connection-init-sql: ALTER SESSION SET CURRENT_SCHEMA=SHARDING
+
+    encrypt:
+      tables:
+        CONFIG:
+          columns:
+            NAME:
+              cipherColumn: NAME
+              encryptor: order_encryptor
+      encryptors:
+        order_encryptor:
+          type: aes
+          props:
+            aes.key.value: 22fcf0cd2cf07841d4214d6a14b2b28c
+    props:
+      sql.show: true
+      query.with.cipher.column: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle10gDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+
